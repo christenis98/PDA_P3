@@ -1,12 +1,12 @@
 import React from 'react';
 
 
-const Busqueda = () =>{
+const Busqueda = (props) =>{
     return(
         <div className= "busqueda">
             <form action="">
-                <input type="text"/>
-                <input type="text"/>
+                <input onChange={props.hacerBusquedaAutor} type="text"/>
+                <input onChange={props.hacerBusquedaTitulo} type="text"/>
                 <button type="submit">Buscar</button>
             </form>
         </div>
