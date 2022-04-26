@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import Busqueda from './Busqueda';
 import axios from 'axios';
-
+import ListaLibros from './ListaLibros';
 
 class Libros extends Component{
 
@@ -11,15 +11,21 @@ class Libros extends Component{
             modo : 0,
             book: [],
             authorField: '',
-            titleField: ''
+            titleField: '',
+            printType: ''
         }
     }
 
     buscarLibro = (e) =>{
-        e.preventDefault()
+        e.preventDefault();
         const url = "https://www.googleapis.com/books/v1/volumes?q="
-        axios.get(url + this.state.titleField + "+inauthor:" + this.state.authorField)
-          .then(data => console.log(data))
+        axios.get(url + this.state.titleField + "+inauthor:" + this.state.authorField 
+        + "&printType=" + this.state.printType)
+          .then((data) => {
+              console.log(data);
+              const cleanData = this.cleanData(data);
+              this.setState({book: cleanData})
+          })
     }
 
     hacerBusquedaAutor = (e) => {
@@ -33,8 +39,17 @@ class Libros extends Component{
     }
 
     cambiarModo = (e) =>{
-        console.log(e.target.value);
-        this.setState({modo: e.target.value})
+        this.setState({printType: e.target.value});
+    }
+
+    cleanData = (data) =>{
+        const cleanedData = data.data.items.map((book) =>{
+            if(book.volumeInfo.hasOwnProperty('imageLinks')===false){
+                book.volumeInfo['imageLinks'] = {thumbnail: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/1024px-No_image_available.svg.png'}
+            }
+            return book;
+        })
+        return cleanedData;
     }
 
   render() {
@@ -42,7 +57,9 @@ class Libros extends Component{
       <div >
         <Busqueda buscarLibro ={this.buscarLibro}
         hacerBusquedaAutor={this.hacerBusquedaAutor} 
-        hacerBusquedaTitulo={this.hacerBusquedaTitulo}/>
+        hacerBusquedaTitulo={this.hacerBusquedaTitulo}
+        cambiarModo={this.cambiarModo}/>
+        <ListaLibros books={this.state.book}/>
       </div>
     )
   }

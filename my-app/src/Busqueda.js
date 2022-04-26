@@ -9,17 +9,16 @@ const Busqueda = (props) =>{
                 <input onChange={props.hacerBusquedaTitulo} type="text"  placeholder="Titulo"/>
                 <br></br>
                 <br></br>
-                <div className ="radio" >
-                    <input className ="radio__input" type="radio" value="0" name="myRadio" 
+                <div className ="radio" onChange={props.cambiarModo} >
+                    <input className ="radio__input" type="radio" value="all" name="myRadio" 
                     id="radio1" onChange={props.cambiarModo} defaultChecked/>
                     <label className ="radio__label" htmlFor="radio1">All</label>
-                    <input className ="radio__input" type="radio" value="1" name="myRadio" 
+                    <input className ="radio__input" type="radio" value="books" name="myRadio" 
                     id="radio2" onChange={props.cambiarModo} />
                     <label className ="radio__label" htmlFor="radio2">Books</label>                    
-                    <input className ="radio__input" type="radio" value="2" name="myRadio" 
-                    id="radio3" onChange={props.cambiarModo}/>
+                    <input className ="radio__input" type="radio" value="magazines" name="myRadio" 
+                    id="radio3" onChange={props.cambiarModo} />
                     <label className ="radio__label" htmlFor="radio3">Magazines</label>
-                    
                 </div>
                 <br></br>
                 <br></br>
