@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import Busqueda from './Busqueda';
-import request from 'superagent';
+import axios from 'axios';
 
 
 class Libros extends Component{
@@ -8,19 +8,18 @@ class Libros extends Component{
     constructor(props){
         super(props);
         this.state = {
+            modo : 0,
             book: [],
             authorField: '',
             titleField: ''
         }
     }
 
-    buscarLibro = () =>{
-        request
-        .get("https://www.googleapis.com/books/v1/volumes")
-        .query({q1:this.authorField, q2:this.titleField})
-        .then((data) =>{
-            
-        })
+    buscarLibro = (e) =>{
+        e.preventDefault()
+        const url = "https://www.googleapis.com/books/v1/volumes?q="
+        axios.get(url + this.state.titleField + "+inauthor:" + this.state.authorField)
+          .then(data => console.log(data))
     }
 
     hacerBusquedaAutor = (e) => {
@@ -33,10 +32,16 @@ class Libros extends Component{
         this.setState({titleField: e.target.value})
     }
 
+    cambiarModo = (e) =>{
+        console.log(e.target.value);
+        this.setState({modo: e.target.value})
+    }
+
   render() {
     return(
       <div >
-        <Busqueda hacerBusquedaAutor={this.hacerBusquedaAutor} 
+        <Busqueda buscarLibro ={this.buscarLibro}
+        hacerBusquedaAutor={this.hacerBusquedaAutor} 
         hacerBusquedaTitulo={this.hacerBusquedaTitulo}/>
       </div>
     )
