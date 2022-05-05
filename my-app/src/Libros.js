@@ -12,14 +12,14 @@ class Libros extends Component{
             book: [],
             authorField: '',
             titleField: '',
-            printType: ''
+            printType: 'all'
         }
     }
 
     buscarLibro = (e) =>{
         e.preventDefault();
         const url = "https://www.googleapis.com/books/v1/volumes?q="
-        axios.get(url + this.state.titleField + "+inauthor:" + this.state.authorField 
+        axios.get(url + "intitle:" + this.state.titleField + "+inauthor:" + this.state.authorField 
         + "&printType=" + this.state.printType)
           .then((data) => {
               console.log(data);
@@ -45,7 +45,7 @@ class Libros extends Component{
     cleanData = (data) =>{
         const cleanedData = data.data.items.map((book) =>{
             if(book.volumeInfo.hasOwnProperty('imageLinks')===false){
-                book.volumeInfo['imageLinks'] = {thumbnail: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/1024px-No_image_available.svg.png'}
+                book.volumeInfo['imageLinks'] = {thumbnail: 'https://www.blackwallst.directory/images/NoImageAvailable.png'}
             }
             return book;
         })
